@@ -1,13 +1,38 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import OAuth from '../components/OAuth';
+import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
+import { toast } from 'react-toastify';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState("")
 
+
   function onChange(e){
     setEmail(e.target.value);
   }
+
+  async function onSubmit(e){
+    e.preventDefault()
+    try {
+      const auth = getAuth()
+      // Check if the email is valid before sending the reset email
+      if (!isValidEmail(email)) {
+        toast.error("Invalid email address")
+        return;
+      }
+      await sendPasswordResetEmail(auth, email)      
+      toast.success("Email sent for reset password")
+    } catch (error) {
+      toast.error("Could not send link for password reset")
+    }
+  }
+  function isValidEmail(email) {
+    // Use a regular expression to validate the email format
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email);
+  }
+  
 
   return (
     <section>
@@ -19,8 +44,8 @@ export default function ForgotPassword() {
             src="/signin.jpg" alt="key" />
         </div>
         <div className='w-full md:w-[67%] lg:w-[40%] lg:ml-20'>
-          <form >
-            <input 
+          <form onSubmit={onSubmit}>
+              <input 
               className='mb-6 w-full px-4 py-2 text-xl text-gray-700 bg-white border-gray-300 rounded transition ease-in-out' 
               type="email" 
               id='email'

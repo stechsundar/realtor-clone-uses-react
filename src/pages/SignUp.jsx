@@ -41,6 +41,7 @@ export default function SignUp() {
       const formDataCopy = {...formData}
       delete formDataCopy.password
       formDataCopy.timestamp = serverTimestamp();
+      
       await setDoc(doc(db, "users", user.uid), formDataCopy)
       toast.success("Successfully registered!")
       navigate('/');
