@@ -1,4 +1,6 @@
 import React from 'react'
+import {getAuth, GoogleAuthProvider, signInWithPopup} from "firebase/auth"
+import {doc, setDoc, serverTimestamp, getDoc} from "firebase/firestore"
 import { FcGoogle } from 'react-icons/fc'
 
 export default function OAuth() {
