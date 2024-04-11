@@ -26,7 +26,7 @@ export default function Profile() {
   }
   async function onSubmit(){
     try {
-      if(auth.displayName!=name){
+      if(auth.displayName!==name){
         await updateProfile(auth.currentUser, {
           displayName:name
         });
